@@ -19,14 +19,40 @@
 <style>
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration) infinite;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.5); }
+}
+
 html, body {
     height: 100%;
     padding: 0;
     margin: 0;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background: linear-gradient(-45deg, #0a0514, #1a0523, #0f0f2a, #1e0520);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
     font-family: 'SF Pro Display', sans-serif;
+    overflow: hidden;
 }
 
 @keyframes gradientBG {
@@ -90,7 +116,7 @@ canvas {
 </HEAD>
 
 <BODY>
-
+<div class="stars"></div>
 <div class="box">
     <canvas id="pinkboard"></canvas>
 </div>
@@ -105,11 +131,11 @@ canvas {
 
 var settings = {
 particles: {
-length: 20000,         // more particles
+length: 25000,         // thêm nhiều particles hơn
 duration: 4,           // faster refresh
-velocity: 100,         // faster movement
-effect: -1.1,         // smoother effect
-size: 12,             // larger particles
+velocity: 120,         // tăng tốc độ
+effect: -0.9,         // hiệu ứng mượt hơn
+size: 14,             // kích thước particles lớn hơn
 },
 };
 
@@ -391,9 +417,9 @@ function pointOnHeart(t) {
 
 return new Point(
 
-160 * Math.pow(Math.sin(t), 3),
+180 * Math.pow(Math.sin(t), 3),  // tăng từ 160 lên 180
 
-130 * Math.cos(t) - 50 * Math.cos(2 * t) - 20 * Math.cos(3 * t) - 10 * Math.cos(4 * t) + 25
+150 * Math.cos(t) - 60 * Math.cos(2 * t) - 25 * Math.cos(3 * t) - 12 * Math.cos(4 * t) + 25  // điều chỉnh tỉ lệ
 
 );
 
@@ -535,6 +561,34 @@ render();
 
 })(document.getElementById('pinkboard'));
 
+// Thêm code tạo ngôi sao
+function createStars() {
+    const stars = document.querySelector('.stars');
+    const count = 100;
+    
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Random duration between 1-3s
+        const duration = 1 + Math.random() * 2;
+        
+        star.style.left = x + '%';
+        star.style.top = y + '%';
+        star.style.setProperty('--duration', duration + 's');
+        
+        // Random delay
+        star.style.animationDelay = Math.random() * 3 + 's';
+        
+        stars.appendChild(star);
+    }
+}
+
+createStars();
 </script>
 
 </BODY>
